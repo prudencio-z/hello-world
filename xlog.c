@@ -25,7 +25,6 @@ void xlog( const char * fmt, ... )
     write( 1, buf, n );
 }
 
-
 int main(int argc, char * argv[])
 {
     int fd = open( "./logInfo", O_RDWR|O_CREAT );
