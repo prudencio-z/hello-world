@@ -26,7 +26,7 @@ void xlog( const char * fmt, ... )
 }
 
 
-int main()
+int main(int argc, char * argv[])
 {
     int fd = open( "./logInfo", O_RDWR|O_CREAT );
     ftruncate( fd, 0 );
