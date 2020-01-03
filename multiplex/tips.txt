@@ -1,0 +1,17 @@
+=================================
+make static library
+1. gcc *.c -c 
+2. ar rcs libMyTest.a *.o 
+
+=================================
+make share library
+gcc -fPIC *.c -c
+gcc -shared -o libMyTest.so *.o
+
+prompt 'error while loading shared libraries'
+there are 4 ways to fix this:
+1. export LD_LIBRARY_PATH=<so patch>
+2. write '1.' to /home .bashrc
+3. mv .so to usr/lib 
+4. edit /etc/ld.so.conf, then 'sudo ldconfig -v' to update
+
