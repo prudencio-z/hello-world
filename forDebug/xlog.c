@@ -7,6 +7,10 @@
 #include <string.h>
 #include <fcntl.h>
 #include <stdarg.h>
+#include <sys/time.h>
+
+#define XLOG_BUFFER_SIZE        1024
+
 
 #define XLOGD( FORMAT, args... ) \
 	xlog( "->%s(%d):"FORMAT, __FUNCTION__, __LINE__, ##args );
@@ -15,12 +19,18 @@
 void xlog( const char * fmt, ... )
 {
     va_list arg;
-    char buf[1024];
+    char buf[XLOG_BUFFER_SIZE];
+
+    struct timeval _t = { 0, 0 };
+    gettimeofday( &_t, NULL );
+
     int n = 0;
-    n= snprintf( buf, 1024, "[%s]","XLOG:" );
+    n= snprintf( buf, XLOG_BUFFER_SIZE, "XLOG[%ld.%ld]", _t.tv_sec, _t.tv_usec/1000 );
     va_start( arg, fmt );
-    n += vsnprintf( buf+n, 1024-n, fmt, arg );
+    n += vsnprintf( buf+n, XLOG_BUFFER_SIZE-n, fmt, arg );
     va_end( arg );
+
+    n += snprintf( buf+n, XLOG_BUFFER_SIZE-n, "\n" );
 
     write( 1, buf, n );
 }
